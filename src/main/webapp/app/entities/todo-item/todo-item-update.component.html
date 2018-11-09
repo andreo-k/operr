@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-todo-item-heading">Create or edit a Todo Item</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!todoItem.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="todoItem.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_eventTime">Event Time</label>
+                    <div class="d-flex">
+                        <input id="field_eventTime" type="datetime-local" class="form-control" name="eventTime" [(ngModel)]="eventTime"
+                        required/>
+                    </div>
+                    <div [hidden]="!(editForm.controls.eventTime?.dirty && editForm.controls.eventTime?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.eventTime?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.eventTime?.errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_todoTitle">Todo Title</label>
+                    <input type="text" class="form-control" name="todoTitle" id="field_todoTitle"
+                        [(ngModel)]="todoItem.todoTitle" required maxlength="100"/>
+                    <div [hidden]="!(editForm.controls.todoTitle?.dirty && editForm.controls.todoTitle?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.todoTitle?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.todoTitle?.errors?.maxlength">
+                        This field cannot be longer than 100 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_todoDesc">Todo Desc</label>
+                    <input type="text" class="form-control" name="todoDesc" id="field_todoDesc"
+                        [(ngModel)]="todoItem.todoDesc" required maxlength="1000"/>
+                    <div [hidden]="!(editForm.controls.todoDesc?.dirty && editForm.controls.todoDesc?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.todoDesc?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.todoDesc?.errors?.maxlength">
+                        This field cannot be longer than 1000 characters.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

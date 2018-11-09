@@ -1,0 +1,5 @@
+entity TodoItem {
+	eventTime Instant required,
+    todoTitle String required maxlength(100),
+    todoDesc String required maxlength(1000)
+}

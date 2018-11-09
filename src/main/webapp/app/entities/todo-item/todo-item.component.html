@@ -1,0 +1,58 @@
+<div>
+    <h2 id="page-heading">
+        <span>Todo Items</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-todo-item" [routerLink]="['/todo-item/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Todo Item
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="todoItems">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Event Time</span></th>
+            <th><span>Todo Title</span></th>
+            <th><span>Todo Desc</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let todoItem of todoItems ;trackBy: trackId">
+                <td><a [routerLink]="['/todo-item', todoItem.id, 'view' ]">{{todoItem.id}}</a></td>
+                <td>{{todoItem.eventTime | date:'medium'}}</td>
+                <td>{{todoItem.todoTitle}}</td>
+                <td>{{todoItem.todoDesc}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/todo-item', todoItem.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/todo-item', todoItem.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'todo-item/'+ todoItem.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
