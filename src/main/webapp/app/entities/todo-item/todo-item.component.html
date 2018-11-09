@@ -1,12 +1,25 @@
 <div>
     <h2 id="page-heading">
         <span>Todo Items</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-todo-item" [routerLink]="['/todo-item/new']">
+
+        <button type="submit"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                [disabled]="selectionEmpty()"
+                class="btn btn-danger float-right">
+            <fa-icon [icon]="'times'"></fa-icon>
+            <span class="d-none d-md-inline">Delete items</span>
+        </button>
+
+        <button id="jh-create-entity"
+                class="btn btn-primary float-right jh-create-entity create-todo-item" [routerLink]="['/todo-item/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Todo Item
             </span>
         </button>
+
+        <!--[routerLink]="['/', { outlets: { popup: 'todo-item/'+ todoItem.id + '/delete'} }]"-->
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -14,6 +27,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
+            <th></th>
             <th><span>ID</span></th>
             <th><span>Event Time</span></th>
             <th><span>Todo Title</span></th>
@@ -23,6 +37,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let todoItem of todoItems ;trackBy: trackId">
+                <td><input type="checkbox" (change)="selectionChanged(todoItem)" /> </td>
                 <td><a [routerLink]="['/todo-item', todoItem.id, 'view' ]">{{todoItem.id}}</a></td>
                 <td>{{todoItem.eventTime | date:'medium'}}</td>
                 <td>{{todoItem.todoTitle}}</td>

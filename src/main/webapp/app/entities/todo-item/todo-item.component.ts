@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import * as _ from 'lodash';
 
 import { ITodoItem } from 'app/shared/model/todo-item.model';
 import { Principal } from 'app/core';
@@ -13,6 +14,7 @@ import { TodoItemService } from './todo-item.service';
 })
 export class TodoItemComponent implements OnInit, OnDestroy {
     todoItems: ITodoItem[];
+    selection: ITodoItem[] = [];
     currentAccount: any;
     eventSubscriber: Subscription;
 
@@ -46,6 +48,18 @@ export class TodoItemComponent implements OnInit, OnDestroy {
 
     trackId(index: number, item: ITodoItem) {
         return item.id;
+    }
+
+    selectionChanged(item: ITodoItem) {
+        if (_.indexOf(this.selection, item) === -1) {
+            this.selection.push(item);
+        } else {
+            _.pull(this.selection, item);
+        }
+    }
+
+    selectionEmpty(): boolean {
+        return _.isEmpty(this.selection);
     }
 
     registerChangeInTodoItems() {
