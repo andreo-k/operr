@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 import { ITodoItem } from 'app/shared/model/todo-item.model';
 import { Principal } from 'app/core';
 import { TodoItemService } from './todo-item.service';
+import { TodoItemDeleteDialogComponent } from 'app/entities/todo-item/todo-item-delete-dialog.component';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-todo-item',
@@ -22,7 +24,8 @@ export class TodoItemComponent implements OnInit, OnDestroy {
         private todoItemService: TodoItemService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal
+        private principal: Principal,
+        private modalService: NgbModal
     ) {}
 
     loadAll() {
@@ -51,15 +54,36 @@ export class TodoItemComponent implements OnInit, OnDestroy {
     }
 
     selectionChanged(item: ITodoItem) {
-        if (_.indexOf(this.selection, item) === -1) {
-            this.selection.push(item);
-        } else {
+        if (this.isSelected(item)) {
             _.pull(this.selection, item);
+        } else {
+            this.selection.push(item);
         }
+    }
+
+    isSelected(item: ITodoItem): boolean {
+        return _.indexOf(this.selection, item) !== -1;
     }
 
     selectionEmpty(): boolean {
         return _.isEmpty(this.selection);
+    }
+
+    deleteSelection() {
+        setTimeout(() => {
+            let ngbModalRef = this.modalService.open(TodoItemDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+
+            ngbModalRef.result
+                .then(result => {
+                    this.todoItemService.deleteMultiple(this.selection).subscribe(response => {
+                        this.eventManager.broadcast({
+                            name: 'todoItemListModification',
+                            content: 'Deleted selected todoItems'
+                        });
+                    });
+                })
+                .catch(() => {});
+        }, 0);
     }
 
     registerChangeInTodoItems() {

@@ -20,8 +20,13 @@ export class TodoItemDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: number) {
-        this.todoItemService.delete(id).subscribe(response => {
+    confirmDelete() {
+        if (!this.todoItem) {
+            this.activeModal.close(true);
+            return;
+        }
+
+        this.todoItemService.delete(this.todoItem.id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'todoItemListModification',
                 content: 'Deleted an todoItem'

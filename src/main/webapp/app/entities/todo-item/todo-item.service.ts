@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { ITodoItem } from 'app/shared/model/todo-item.model';
+import * as _ from 'lodash';
 
 type EntityResponseType = HttpResponse<ITodoItem>;
 type EntityArrayResponseType = HttpResponse<ITodoItem[]>;
@@ -47,6 +48,12 @@ export class TodoItemService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    deleteMultiple(items: ITodoItem[]): Observable<HttpResponse<any>> {
+        console.log('Yo!');
+        const ids = _.map(items, 'id');
+        return this.http.post<number[]>(`${this.resourceUrl}/delete-multiple`, ids, { observe: 'response' });
     }
 
     protected convertDateFromClient(todoItem: ITodoItem): ITodoItem {

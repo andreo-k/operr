@@ -2,13 +2,12 @@
     <h2 id="page-heading">
         <span>Todo Items</span>
 
-        <button type="submit"
-                replaceUrl="true"
-                queryParamsHandling="merge"
+        <button
+                (click)="deleteSelection()"
                 [disabled]="selectionEmpty()"
                 class="btn btn-danger float-right">
             <fa-icon [icon]="'times'"></fa-icon>
-            <span class="d-none d-md-inline">Delete items</span>
+            <span class="d-none d-md-inline">Delete selected items</span>
         </button>
 
         <button id="jh-create-entity"
@@ -37,7 +36,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let todoItem of todoItems ;trackBy: trackId">
-                <td><input type="checkbox" (change)="selectionChanged(todoItem)" /> </td>
+                <td><input type="checkbox" (change)="selectionChanged(todoItem)" [checked]="isSelected(todoItem)" /> </td>
                 <td><a [routerLink]="['/todo-item', todoItem.id, 'view' ]">{{todoItem.id}}</a></td>
                 <td>{{todoItem.eventTime | date:'medium'}}</td>
                 <td>{{todoItem.todoTitle}}</td>

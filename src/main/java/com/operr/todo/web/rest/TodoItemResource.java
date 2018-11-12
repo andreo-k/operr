@@ -55,6 +55,7 @@ public class TodoItemResource {
             .body(result);
     }
 
+
     /**
      * PUT  /todo-items : Updates an existing todoItem.
      *
@@ -117,4 +118,15 @@ public class TodoItemResource {
         todoItemRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @PostMapping("/todo-items/delete-multiple")
+    @Timed
+    public ResponseEntity<TodoItem> deleteTodoItems(@Valid @RequestBody Iterable<Long> ids) throws URISyntaxException {
+        log.debug("request to delete multiple TodoItems");
+
+        List<TodoItem> result = todoItemRepository.findAllById(ids);
+        todoItemRepository.deleteAll(result);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, "")).build();
+    }
+
 }
