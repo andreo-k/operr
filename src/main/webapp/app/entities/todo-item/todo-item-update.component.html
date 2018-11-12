@@ -13,7 +13,7 @@
                     <label class="form-control-label" for="field_eventTime">Event Time</label>
                     <div class="d-flex">
                         <input id="field_eventTime" type="datetime-local" class="form-control" name="eventTime" [(ngModel)]="eventTime"
-                        required/>
+                        required futureDate />
                     </div>
                     <div [hidden]="!(editForm.controls.eventTime?.dirty && editForm.controls.eventTime?.invalid)">
                         <small class="form-text text-danger"
@@ -24,12 +24,16 @@
                             [hidden]="!editForm.controls.eventTime?.errors?.ZonedDateTimelocal">
                             This field should be a date and time.
                         </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.eventTime?.errors?.futureDate">
+                            Date/time should not be in past.
+                        </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_todoTitle">Todo Title</label>
                     <input type="text" class="form-control" name="todoTitle" id="field_todoTitle"
-                        [(ngModel)]="todoItem.todoTitle" required maxlength="100"/>
+                        [(ngModel)]="todoItem.todoTitle" required maxlength="100">
                     <div [hidden]="!(editForm.controls.todoTitle?.dirty && editForm.controls.todoTitle?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.todoTitle?.errors?.required">

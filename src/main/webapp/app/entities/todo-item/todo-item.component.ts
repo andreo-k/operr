@@ -71,7 +71,7 @@ export class TodoItemComponent implements OnInit, OnDestroy {
 
     deleteSelection() {
         setTimeout(() => {
-            let ngbModalRef = this.modalService.open(TodoItemDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+            const ngbModalRef = this.modalService.open(TodoItemDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
 
             ngbModalRef.result
                 .then(result => {
